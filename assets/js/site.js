@@ -20,18 +20,40 @@
 		var current = 0;
 		var dots = document.createElement('div');
 		dots.className = 'dots';
+		var controls = null;
+		var previous = null;
+		var next = null;
+		if (root.closest('.home-hero')) {
+			controls = document.createElement('div');
+			controls.className = 'slide-controls';
+			previous = document.createElement('button');
+			previous.type = 'button';
+			previous.className = 'slide-arrow slide-arrow--previous';
+			previous.setAttribute('aria-label', 'Ảnh trước');
+			previous.innerHTML = '<span aria-hidden="true">&#8249;</span>';
+			next = document.createElement('button');
+			next.type = 'button';
+			next.className = 'slide-arrow slide-arrow--next';
+			next.setAttribute('aria-label', 'Ảnh tiếp theo');
+			next.innerHTML = '<span aria-hidden="true">&#8250;</span>';
+			controls.appendChild(previous);
+			controls.appendChild(next);
+		}
 
 		function show(index) {
 			slides[current].classList.remove('is-active');
+			slides[current].setAttribute('aria-hidden', 'true');
 			dots.children[current].classList.remove('is-active');
 			dots.children[current].setAttribute('aria-selected', 'false');
 			current = (index + slides.length) % slides.length;
 			slides[current].classList.add('is-active');
+			slides[current].setAttribute('aria-hidden', 'false');
 			dots.children[current].classList.add('is-active');
 			dots.children[current].setAttribute('aria-selected', 'true');
 		}
 
 		slides.forEach(function (slide, index) {
+			slide.setAttribute('aria-hidden', index === 0 ? 'false' : 'true');
 			var dot = document.createElement('button');
 			dot.type = 'button';
 			dot.setAttribute('role', 'tab');
@@ -45,7 +67,12 @@
 			dots.appendChild(dot);
 		});
 		dots.setAttribute('role', 'tablist');
-		root.parentNode.insertBefore(dots, root.nextSibling);
+		root.appendChild(dots);
+		if (controls) {
+			previous.addEventListener('click', function () { show(current - 1); stop(); });
+			next.addEventListener('click', function () { show(current + 1); stop(); });
+			root.appendChild(controls);
+		}
 
 		var interval = parseInt(root.getAttribute('data-interval'), 10) || 5000;
 		var timer = null;

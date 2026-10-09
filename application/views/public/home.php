@@ -1,9 +1,5 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 <div class="layout-home">
-	<aside class="rail rail-left" aria-label="<?php echo lang('site_sidebar_left'); ?>">
-		<?php $this->load->view('public/partials/rail', array('sections' => $rail, 'siteLang' => $siteLang)); ?>
-	</aside>
-
 	<div class="main-col">
 		<?php if (! empty($slider)): ?>
 		<section class="panel panel-hero home-hero" aria-label="<?php echo lang('site_featured_images'); ?>">
@@ -65,8 +61,13 @@
 		<?php endforeach; ?>
 	</div>
 
-	<aside class="rail rail-right" aria-label="<?php echo lang('site_sidebar_right'); ?>">
-		<?php $this->load->view('public/partials/rail', array('sections' => $railRight, 'siteLang' => $siteLang)); ?>
+	<aside class="rail home-curation" aria-label="<?php echo $siteLang === 'en' ? 'Company information and activities' : 'Thông tin và hoạt động'; ?>">
+		<div class="home-curation-heading">
+			<h2><?php echo $siteLang === 'en' ? 'Company life' : 'Thông tin doanh nghiệp'; ?></h2>
+			<p><?php echo $siteLang === 'en' ? 'Projects, people and useful resources' : 'Dự án, con người và các chuyên mục hữu ích'; ?></p>
+		</div>
+		<?php $homeRail = array_merge($rail, $railRight); ?>
+		<?php $this->load->view('public/partials/rail', array('sections' => $homeRail, 'siteLang' => $siteLang)); ?>
 	</aside>
 </div>
 

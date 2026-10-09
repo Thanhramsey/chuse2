@@ -28,10 +28,10 @@ $appBaseUrl = getenv('APP_BASE_URL');
 if ($appBaseUrl === FALSE || $appBaseUrl === '')
 {
 	$devHosts = array(
-		'localhost' => 'http://localhost/chuse/',
-		'127.0.0.1' => 'http://127.0.0.1/chuse/',
+		'localhost' => 'http://localhost/chuse2/',
+		'127.0.0.1' => 'http://127.0.0.1/chuse2/',
 		'chuse.test' => 'http://chuse.test/',
-		'qlcviec.freedev.app' => 'https://qlcviec.freedev.app/'
+		'thanhtrinh.freehosting.dev' => 'https://thanhtrinh.freehosting.dev/'
 	);
 	$requestHost = isset($_SERVER['HTTP_HOST']) ? strtolower((string) $_SERVER['HTTP_HOST']) : 'localhost';
 	$appBaseUrl = isset($devHosts[$requestHost]) ? $devHosts[$requestHost] : 'http://localhost/chuse/';

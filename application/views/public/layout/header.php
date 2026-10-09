@@ -31,8 +31,11 @@ $showLanguageSwitch = $englishSiteUrl !== '#';
 	<meta property="og:locale" content="<?php echo $siteLang === 'en' ? 'en_US' : 'vi_VN'; ?>">
 	<link rel="icon" href="<?php echo html_escape($logoUrl); ?>">
 	<link rel="stylesheet" href="<?php echo public_asset('assets/css/site.css'); ?>">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Noto+Serif:wght@500;600;700&display=swap" rel="stylesheet">
 </head>
-<body>
+<body<?php echo $activePath === '' ? ' class="home-page"' : ''; ?>>
 <div class="site-loader" aria-hidden="true"><span class="site-loader-mark"><img src="<?php echo html_escape($logoUrl); ?>" alt=""></span><span class="site-loader-ring"></span></div>
 <div class="site-scroll-progress" aria-hidden="true"><span></span></div>
 <noscript><style>.site-loader,.site-scroll-progress{display:none!important}</style></noscript>
@@ -58,9 +61,13 @@ $showLanguageSwitch = $englishSiteUrl !== '#';
 				<?php endif; ?>
 			</div>
 			<div class="masthead-media" aria-hidden="true">
+				<?php if ($activePath === ''): ?>
+				<img src="<?php echo html_escape($mastheadSceneUrl); ?>" alt="">
+				<?php else: ?>
 				<span class="masthead-diamond masthead-diamond--one"><img src="<?php echo html_escape($mastheadSceneUrl); ?>" alt=""></span>
 				<span class="masthead-diamond masthead-diamond--two"><img src="<?php echo html_escape($mastheadSceneUrl); ?>" alt=""></span>
 				<span class="masthead-diamond masthead-diamond--three"><img src="<?php echo html_escape($mastheadSceneUrl); ?>" alt=""></span>
+				<?php endif; ?>
 			</div>
 		</div>
 		<div class="nav-bar">
