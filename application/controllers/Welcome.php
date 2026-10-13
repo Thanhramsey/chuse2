@@ -11,25 +11,77 @@ class Welcome extends Public_Controller
 		$groups = $this->Home_section_model->groupedActive();
 		$mainSections = array();
 		$fullSections = array();
+		$projectSection = NULL;
+		$companyStorySection = NULL;
+		$sliderEnabled = FALSE;
 		foreach ($groups['main'] as $section)
 		{
+			if ($section['section_key'] === 'slider' && $section['section_type'] === 'slider')
+			{
+				$sliderEnabled = TRUE;
+				continue;
+			}
+			if (in_array($section['section_key'], array('featured_projects', 'kcn_nam_pleiku'), TRUE))
+			{
+				$section['items'] = $this->sectionItems($section);
+				$projectSection = $section;
+				continue;
+			}
+			if ($section['section_key'] !== 'intro')
+			{
+				continue;
+			}
 			$section['items'] = $this->sectionItems($section);
 			$mainSections[] = $section;
 		}
 		foreach ($groups['full'] as $section)
 		{
+			if (in_array($section['section_key'], array('featured_projects', 'kcn_nam_pleiku'), TRUE))
+			{
+				if ($projectSection === NULL)
+				{
+					$section['items'] = $this->sectionItems($section);
+					$projectSection = $section;
+				}
+				continue;
+			}
+			if (! in_array($section['section_key'], array('orientation', 'company_story', 'news'), TRUE))
+			{
+				continue;
+			}
 			$section['items'] = $this->sectionItems($section);
+			if ($section['section_key'] === 'company_story')
+			{
+				$companyStorySection = $section;
+				continue;
+			}
+			if ($section['section_key'] === 'orientation')
+			{
+				$section['content_html'] = $this->formatOrientation($section['content_html']);
+			}
 			$fullSections[] = $section;
 		}
+		if ($companyStorySection !== NULL)
+		{
+			$mainSections[] = $companyStorySection;
+		}
+		if ($projectSection !== NULL)
+		{
+			$mainSections[] = $projectSection;
+		}
+		$rail = array_values(array_filter($this->railSections(array('left')), function ($section) {
+			return in_array($section['section_key'], array('photo_bank', 'videos', 'featured_news'), TRUE);
+		}));
+		$slider = $sliderEnabled ? $this->Slider_model->search(array('status' => '1'), 10, 0) : array();
 
 		$this->render('public/home', array(
 			'page_title' => $this->setting('meta_title', $this->setting('company_name', 'Công ty TNHH MTV Cao su Chư Sê')),
 			'meta_description' => $this->setting('meta_description', $this->setting('slogan')),
-			'rail' => $this->railSections(array('left')),
-			'railRight' => $this->railSections(array('right')),
+			'rail' => $rail,
+			'sidebarMenu' => $this->Menu_model->flatTree('home_sidebar', TRUE),
 			'mainSections' => $mainSections,
 			'fullSections' => $fullSections,
-			'slider' => $this->Slider_model->search(array('status' => '1'), 10, 0)
+			'slider' => $slider
 		));
 	}
 
@@ -215,6 +267,44 @@ class Welcome extends Public_Controller
 			'pages' => (int) ceil($total / self::PER_PAGE),
 			'baseUrl' => $baseUrl
 		));
+	}
+
+	private function formatOrientation($content)
+	{
+		if (strpos($content, 'home-vision') !== FALSE && strpos($content, 'home-mission') !== FALSE)
+		{
+			return $content;
+		}
+		if (! class_exists('DOMDocument'))
+		{
+			return $content;
+		}
+		$document = new DOMDocument('1.0', 'UTF-8');
+		$previous = libxml_use_internal_errors(TRUE);
+		$document->loadHTML('<?xml encoding="utf-8"?><div>' . $content . '</div>', LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+		libxml_clear_errors();
+		libxml_use_internal_errors($previous);
+		$xpath = new DOMXPath($document);
+		$cards = $xpath->query('//*[contains(concat(" ", normalize-space(@class), " "), " home-orientation ")]/div');
+		if ($cards->length < 2)
+		{
+			return $content;
+		}
+		$paragraphs = array();
+		foreach ($cards as $index => $card)
+		{
+			$heading = $card->getElementsByTagName('strong')->item(0);
+			$paragraph = $card->getElementsByTagName('p')->item(0);
+			if ($index === 0)
+			{
+				$visionText = $paragraph ? trim($paragraph->textContent) : '';
+			}
+			else
+			{
+				$paragraphs[] = '<p><strong>' . html_escape($heading ? trim($heading->textContent) : '') . ':</strong> ' . html_escape($paragraph ? trim($paragraph->textContent) : '') . '</p>';
+			}
+		}
+		return '<div class="home-orientation"><div class="home-vision"><h3>TẦM NHÌN</h3><p>' . html_escape(isset($visionText) ? $visionText : '') . '</p></div><div class="home-mission"><h3>SỨ MỆNH</h3><div class="home-mission-points">' . implode('', $paragraphs) . '</div></div></div>';
 	}
 
 	private function renderDetail($resource, $slug)

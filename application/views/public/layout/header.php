@@ -2,11 +2,17 @@
 $companyName = isset($settings['company_name']) && $settings['company_name'] !== '' ? $settings['company_name'] : 'Công ty TNHH MTV Cao su Chư Sê';
 $groupName = isset($settings['group_name']) && $settings['group_name'] !== '' ? $settings['group_name'] : 'Tập đoàn Công nghiệp Cao su Việt Nam';
 $slogan = isset($settings['slogan']) ? (string) $settings['slogan'] : '';
+$mastheadCompanyName = $companyName;
 if ($siteLang === 'en')
 {
 	$companyName = ! empty($settings['company_name_en']) ? $settings['company_name_en'] : $companyName;
+	$mastheadCompanyName = $companyName;
 	$groupName = ! empty($settings['group_name_en']) ? $settings['group_name_en'] : $groupName;
 	$slogan = ! empty($settings['slogan_en']) ? $settings['slogan_en'] : $slogan;
+}
+if ($siteLang !== 'en' && stripos($mastheadCompanyName, 'VRG') === FALSE)
+{
+	$mastheadCompanyName = preg_replace('/(Cao su)/iu', '$1 VRG', $mastheadCompanyName, 1);
 }
 $logoUrl = public_media_url(isset($settings['logo_path']) ? $settings['logo_path'] : '', base_url('assets/images/logo.png'));
 $bannerUrl = public_media_url(isset($settings['header_banner']) ? $settings['header_banner'] : '', '');
@@ -55,7 +61,7 @@ $showLanguageSwitch = $englishSiteUrl !== '#';
 			</a>
 			<div class="masthead-title">
 				<p class="masthead-group"><?php echo html_escape($groupName); ?></p>
-				<p class="masthead-company"><?php echo html_escape($companyName); ?></p>
+				<p class="masthead-company"><?php echo html_escape($mastheadCompanyName); ?></p>
 				<?php if ($slogan !== ''): ?>
 				<p class="masthead-slogan"><?php echo nl2br(html_escape($slogan)); ?></p>
 				<?php endif; ?>

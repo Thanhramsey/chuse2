@@ -1,5 +1,13 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 <div class="layout-home">
+	<aside class="rail rail-left" aria-label="<?php echo lang('site_sidebar'); ?>">
+		<nav class="home-sidebar-nav" aria-label="<?php echo $siteLang === 'en' ? 'Investment information' : 'Thông tin khu công nghiệp'; ?>">
+			<?php foreach ($sidebarMenu as $menuItem): ?>
+			<a href="<?php echo html_escape(public_safe_url($menuItem['url'])); ?>"><?php echo html_escape(public_label($menuItem, 'title', $siteLang)); ?></a>
+			<?php endforeach; ?>
+		</nav>
+		<?php $this->load->view('public/partials/rail', array('sections' => $rail, 'siteLang' => $siteLang)); ?>
+	</aside>
 	<div class="main-col">
 		<?php if (! empty($slider)): ?>
 		<section class="panel panel-hero home-hero" aria-label="<?php echo lang('site_featured_images'); ?>">
@@ -16,13 +24,16 @@
 		</section>
 		<?php endif; ?>
 
-		<?php foreach ($mainSections as $section): if ($section['section_type'] === 'slider') continue; ?>
-		<section class="panel home-section home-section--<?php echo html_escape($section['section_key']); ?>" data-home-section="<?php echo html_escape($section['section_key']); ?>">
-			<h2 class="panel-title"><?php echo html_escape(public_label($section, 'title', $siteLang)); ?></h2>
+		<?php foreach ($mainSections as $section): if ($section['section_type'] === 'slider') continue; $introImageUrl = ! empty($section['image_path']) ? public_media_url($section['image_path']) : base_url('assets/images/website-reference-branch-office.jpg'); $sectionClass = 'home-section--' . $section['section_key']; if ($section['section_key'] === 'featured_projects') $sectionClass .= ' home-section--kcn_nam_pleiku'; elseif ($section['section_key'] === 'kcn_nam_pleiku') $sectionClass .= ' home-section--featured_projects'; ?>
+		<section class="panel home-section <?php echo html_escape($sectionClass); ?>" data-home-section="<?php echo html_escape($section['section_key']); ?>">
+			<?php if ($section['section_key'] === 'intro'): ?><div class="home-intro-layout has-image"><div class="home-intro-copy">
+			<h2 class="panel-title panel-title--left"><?php echo html_escape(public_label($section, 'title', $siteLang)); ?></h2>
 			<?php if (! empty($section['subtitle'])): ?><p class="section-subtitle"><?php echo html_escape($section['subtitle']); ?></p><?php endif; ?>
+			<?php else: ?><h2 class="panel-title"><?php echo html_escape(public_label($section, 'title', $siteLang)); ?></h2>
+			<?php if (! empty($section['subtitle'])): ?><p class="section-subtitle"><?php echo html_escape($section['subtitle']); ?></p><?php endif; ?><?php endif; ?>
 
 			<?php if ($section['section_type'] === 'html'): ?>
-				<div class="rich-text"><?php echo $section['content_html']; ?></div>
+				<div class="rich-text"><?php if ($section['section_key'] === 'company_story' && ! empty($section['image_path'])): ?><img class="home-story-image" src="<?php echo html_escape(public_media_url($section['image_path'])); ?>" alt="<?php echo html_escape(public_label($section, 'title', $siteLang)); ?>" loading="lazy"><?php endif; ?><?php echo $section['content_html']; ?></div>
 
 			<?php elseif ($section['section_type'] === 'image' && ! empty($section['image_path'])): ?>
 				<img src="<?php echo html_escape(public_media_url($section['image_path'])); ?>" alt="<?php echo html_escape($section['title']); ?>" loading="lazy">
@@ -49,7 +60,7 @@
 			<?php else: ?>
 				<div class="news-grid">
 					<?php foreach ($section['items'] as $item): ?>
-					<?php $this->load->view('public/partials/news_card', array('item' => $item, 'resource' => $section['source_resource'])); ?>
+					<?php $this->load->view('public/partials/news_card', array('item' => $item, 'resource' => isset($item['resource']) ? $item['resource'] : $section['source_resource'])); ?>
 					<?php endforeach; ?>
 				</div>
 			<?php endif; ?>
@@ -57,18 +68,11 @@
 			<?php if (! empty($section['link_url']) && ! empty($section['link_label'])): ?>
 			<p class="more-link"><a href="<?php echo html_escape(public_safe_url($section['link_url'])); ?>"><?php echo html_escape($section['link_label']); ?></a></p>
 			<?php endif; ?>
+			<?php if ($section['section_key'] === 'intro'): ?></div><img class="home-intro-image" src="<?php echo html_escape($introImageUrl); ?>" alt="<?php echo html_escape($section['title']); ?>" loading="lazy"></div><?php endif; ?>
 		</section>
 		<?php endforeach; ?>
 	</div>
 
-	<aside class="rail home-curation" aria-label="<?php echo $siteLang === 'en' ? 'Company information and activities' : 'Thông tin và hoạt động'; ?>">
-		<div class="home-curation-heading">
-			<h2><?php echo $siteLang === 'en' ? 'Company life' : 'Thông tin doanh nghiệp'; ?></h2>
-			<p><?php echo $siteLang === 'en' ? 'Projects, people and useful resources' : 'Dự án, con người và các chuyên mục hữu ích'; ?></p>
-		</div>
-		<?php $homeRail = array_merge($rail, $railRight); ?>
-		<?php $this->load->view('public/partials/rail', array('sections' => $homeRail, 'siteLang' => $siteLang)); ?>
-	</aside>
 </div>
 
 <?php foreach ($fullSections as $section): ?>
@@ -83,7 +87,7 @@
 		<h2 class="panel-title panel-title--left"><?php echo html_escape(public_label($section, 'title', $siteLang)); ?></h2>
 		<?php if (! empty($section['subtitle'])): ?><p class="section-subtitle section-subtitle--left"><?php echo html_escape($section['subtitle']); ?></p><?php endif; ?>
 		<?php if ($section['section_type'] === 'html'): ?>
-			<div class="rich-text"><?php echo $section['content_html']; ?></div>
+			<div class="rich-text"><?php if ($section['section_key'] === 'company_story' && ! empty($section['image_path'])): ?><img class="home-story-image" src="<?php echo html_escape(public_media_url($section['image_path'])); ?>" alt="<?php echo html_escape(public_label($section, 'title', $siteLang)); ?>" loading="lazy"><?php endif; ?><?php echo $section['content_html']; ?></div>
 		<?php elseif (empty($section['items'])): ?>
 			<p class="empty-state"><?php echo lang('site_content_updating'); ?></p>
 		<?php else: ?>

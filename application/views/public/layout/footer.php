@@ -12,6 +12,7 @@ $email = isset($settings['email']) ? (string) $settings['email'] : '';
 $registration = isset($settings['business_registration']) ? (string) $settings['business_registration'] : '';
 $mapUrl = isset($settings['map_embed_url']) ? trim((string) $settings['map_embed_url']) : '';
 $mapUrl = preg_match('~^https://~i', $mapUrl) ? $mapUrl : '';
+$isHomePage = isset($activePath) && $activePath === '';
 ?>
 	</div>
 </main>
@@ -19,7 +20,7 @@ $mapUrl = preg_match('~^https://~i', $mapUrl) ? $mapUrl : '';
 <footer class="site-footer">
 	<div class="container">
 		<div class="footer-main">
-			<div class="footer-col">
+			<div class="footer-col footer-contact">
 				<h2><?php echo lang('site_footer_contact'); ?></h2>
 				<p class="footer-company"><?php echo html_escape($companyName); ?></p>
 				<ul class="footer-list">
@@ -31,8 +32,8 @@ $mapUrl = preg_match('~^https://~i', $mapUrl) ? $mapUrl : '';
 				<?php if ($registration !== ''): ?><p class="footer-note"><?php echo html_escape($registration); ?></p><?php endif; ?>
 			</div>
 
-			<?php if (! empty($footerSections)): ?>
-			<div class="footer-col">
+			<?php if (! $isHomePage && ! empty($footerSections)): ?>
+			<div class="footer-col footer-extra">
 				<?php foreach ($footerSections as $footerSection): ?>
 					<h2><?php echo html_escape(public_label($footerSection, 'title', $siteLang)); ?></h2>
 					<?php if ($footerSection['section_type'] === 'html' && ! empty($footerSection['content_html'])): ?>
@@ -50,8 +51,8 @@ $mapUrl = preg_match('~^https://~i', $mapUrl) ? $mapUrl : '';
 			</div>
 			<?php endif; ?>
 
-			<?php if (! empty($partners)): ?>
-			<div class="footer-col">
+			<?php if (! $isHomePage && ! empty($partners)): ?>
+			<div class="footer-col footer-extra">
 				<h2><?php echo lang('site_footer_partners'); ?></h2>
 				<div class="footer-cert">
 					<?php foreach ($partners as $partner): $logo = public_media_url($partner['logo_path'], ''); if ($logo === '') continue; ?>
@@ -63,8 +64,8 @@ $mapUrl = preg_match('~^https://~i', $mapUrl) ? $mapUrl : '';
 			</div>
 			<?php endif; ?>
 
-			<?php if (! empty($testimonials)): ?>
-			<div class="footer-col">
+			<?php if (! $isHomePage && ! empty($testimonials)): ?>
+			<div class="footer-col footer-extra">
 				<h2><?php echo lang('site_footer_testimonials'); ?></h2>
 				<div class="footer-testimonials">
 					<?php foreach ($testimonials as $testimonial): ?>
@@ -77,7 +78,7 @@ $mapUrl = preg_match('~^https://~i', $mapUrl) ? $mapUrl : '';
 			</div>
 			<?php endif; ?>
 
-			<div class="footer-col">
+			<div class="footer-col footer-connect">
 				<h2><?php echo lang('site_footer_connect'); ?></h2>
 				<p class="footer-text"><?php echo html_escape(sprintf(lang('site_footer_newsletter_intro'), $companyName)); ?></p>
 				<form class="footer-subscribe" method="post" action="<?php echo site_url('dang-ky-nhan-tin'); ?>">
@@ -99,6 +100,11 @@ $mapUrl = preg_match('~^https://~i', $mapUrl) ? $mapUrl : '';
 			<div class="footer-col footer-map">
 				<h2 class="visually-hidden"><?php echo lang('site_contact_map'); ?></h2>
 				<iframe src="<?php echo html_escape($mapUrl); ?>" title="<?php echo lang('site_contact_map'); ?> <?php echo html_escape($companyName); ?>" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+			</div>
+			<?php elseif ($isHomePage): ?>
+			<div class="footer-col footer-map footer-map-placeholder">
+				<h2 class="visually-hidden"><?php echo lang('site_contact_map'); ?></h2>
+				<img src="<?php echo base_url('assets/images/website-reference-map.jpg'); ?>" alt="Bản đồ mẫu trích từ Website.pdf; chờ URL bản đồ chi nhánh">
 			</div>
 			<?php endif; ?>
 		</div>

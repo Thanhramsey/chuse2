@@ -42,6 +42,10 @@ class Home extends Admin_Controller
 		$item['id'] = (int) $item['id'];
 		$item['source_category_id'] = $item['source_category_id'] === NULL ? '' : (int) $item['source_category_id'];
 		$item['status'] = (int) $item['status'];
+		if ($item['section_key'] === 'orientation')
+		{
+			$item += $this->orientationFields($item['content_html']);
+		}
 		$this->json(array('success' => TRUE, 'data' => $item));
 	}
 
@@ -63,6 +67,8 @@ class Home extends Admin_Controller
 		$validator->set_rules('section_type', 'Loại khối', 'trim|required|in_list[' . implode(',', array_keys(Home_section_model::TYPES)) . ']');
 		$validator->set_rules('item_limit', 'Số lượng hiển thị', 'trim|is_natural');
 		$validator->set_rules('sort_order', 'Thứ tự', 'trim|integer');
+		$validator->set_rules('orientation_vision', 'Tầm nhìn', 'trim|max_length[5000]');
+		$validator->set_rules('orientation_mission', 'Sứ mệnh', 'trim|max_length[5000]');
 		$errors = $validator->run() ? array() : $validator->error_array();
 		$key = (string) $this->input->post('section_key');
 		if (! isset($errors['section_key']) && ! preg_match('/^[a-z0-9_]+$/', $key))
@@ -94,6 +100,11 @@ class Home extends Admin_Controller
 		}
 		$this->load->library('Html_sanitizer');
 		$position = (string) $this->input->post('position');
+		$contentHtml = (string) $this->input->post('content_html');
+		if ($key === 'orientation')
+		{
+			$contentHtml = $this->orientationHtml((string) $this->input->post('orientation_vision'), (string) $this->input->post('orientation_mission'));
+		}
 		$now = date('Y-m-d H:i:s');
 		$data = array(
 			'section_key' => $key,
@@ -102,7 +113,7 @@ class Home extends Admin_Controller
 			'subtitle' => (string) $this->input->post('subtitle'),
 			'position' => $position,
 			'section_type' => (string) $this->input->post('section_type'),
-			'content_html' => $this->html_sanitizer->clean($this->input->post('content_html')),
+			'content_html' => $this->html_sanitizer->clean($contentHtml),
 			'image_path' => $imagePath === '' ? NULL : $imagePath,
 			'link_label' => (string) $this->input->post('link_label'),
 			'link_url' => (string) $this->input->post('link_url'),
@@ -119,6 +130,74 @@ class Home extends Admin_Controller
 		}
 		$this->Home_section_model->save($data, $id);
 		$this->json(array('success' => TRUE, 'message' => ($item === NULL ? 'Đã thêm' : 'Đã cập nhật') . ' khối nội dung trang chủ.'));
+	}
+
+	private function orientationHtml($vision, $mission)
+	{
+		$missionPoints = '';
+		foreach (preg_split('/\r\n|\r|\n/', trim($mission)) as $paragraph)
+		{
+			$paragraph = trim($paragraph);
+			if ($paragraph !== '')
+			{
+				$missionPoints .= '<p>' . nl2br(html_escape($paragraph)) . '</p>';
+			}
+		}
+		return '<div class="home-orientation"><div class="home-vision"><h3>TẦM NHÌN</h3><p>' . nl2br(html_escape(trim($vision))) . '</p></div><div class="home-mission"><h3>SỨ MỆNH</h3><div class="home-mission-points">' . $missionPoints . '</div></div></div>';
+	}
+
+	private function orientationFields($content)
+	{
+		$fields = array('orientation_vision' => '', 'orientation_mission' => '');
+		if (! class_exists('DOMDocument'))
+		{
+			return $fields;
+		}
+		$document = new DOMDocument('1.0', 'UTF-8');
+		$previous = libxml_use_internal_errors(TRUE);
+		$document->loadHTML('<?xml encoding="utf-8"?><div>' . $content . '</div>', LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+		libxml_clear_errors();
+		libxml_use_internal_errors($previous);
+		$xpath = new DOMXPath($document);
+		$vision = $xpath->query('//*[contains(concat(" ", normalize-space(@class), " "), " home-vision ")]')->item(0);
+		$mission = $xpath->query('//*[contains(concat(" ", normalize-space(@class), " "), " home-mission ")]')->item(0);
+		if ($vision)
+		{
+			$paragraph = $vision->getElementsByTagName('p')->item(0);
+			$fields['orientation_vision'] = $paragraph ? trim($paragraph->textContent) : '';
+		}
+		if ($mission)
+		{
+			$paragraphs = array();
+			foreach ($mission->getElementsByTagName('p') as $paragraph)
+			{
+				$paragraphs[] = trim($paragraph->textContent);
+			}
+			$fields['orientation_mission'] = implode("\n", $paragraphs);
+		}
+		if ($fields['orientation_vision'] === '')
+		{
+			$cards = $xpath->query('//*[contains(concat(" ", normalize-space(@class), " "), " home-orientation ")]/div');
+			if ($cards->length > 0)
+			{
+				$firstParagraph = $cards->item(0)->getElementsByTagName('p')->item(0);
+				$fields['orientation_vision'] = $firstParagraph ? trim($firstParagraph->textContent) : '';
+				$legacyMission = array();
+				for ($index = 1; $index < $cards->length; $index++)
+				{
+					$card = $cards->item($index);
+					$heading = $card->getElementsByTagName('strong')->item(0);
+					$paragraph = $card->getElementsByTagName('p')->item(0);
+					$text = trim(($heading ? $heading->textContent . ': ' : '') . ($paragraph ? $paragraph->textContent : ''));
+					if ($text !== '')
+					{
+						$legacyMission[] = $text;
+					}
+				}
+				$fields['orientation_mission'] = implode("\n", $legacyMission);
+			}
+		}
+		return $fields;
 	}
 
 	public function delete($id = 0)

@@ -3,7 +3,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Menu_model extends CI_Model
 {
-	const LOCATIONS = array('main' => 'Menu chính', 'footer' => 'Menu chân trang');
+	const LOCATIONS = array('main' => 'Menu chính', 'home_sidebar' => 'Cột trái trang chủ', 'footer' => 'Menu chân trang');
 	const MAX_DEPTH = 3;
 
 	public function flatTree($location, $onlyActive = FALSE)

@@ -4,7 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Settings extends Admin_Controller
 {
 	private $fields = array(
-		'company_name' => array('label' => 'Tên công ty', 'type' => 'text'), 'group_name' => array('label' => 'Tập đoàn/đơn vị chủ quản', 'type' => 'text'), 'slogan' => array('label' => 'Slogan', 'type' => 'text'), 'logo_path' => array('label' => 'Đường dẫn logo', 'type' => 'text'), 'header_banner' => array('label' => 'Ảnh banner đầu trang', 'type' => 'text'), 'business_registration' => array('label' => 'Mã số doanh nghiệp', 'type' => 'text'), 'address' => array('label' => 'Địa chỉ', 'type' => 'text'), 'phone' => array('label' => 'Điện thoại', 'type' => 'text'), 'hotline' => array('label' => 'Hotline', 'type' => 'text'), 'fax' => array('label' => 'Fax', 'type' => 'text'), 'email' => array('label' => 'Email', 'type' => 'email'), 'working_hours' => array('label' => 'Giờ làm việc', 'type' => 'text'), 'map_embed_url' => array('label' => 'Bản đồ nhúng Google Maps', 'type' => 'textarea', 'rows' => 5, 'help' => 'Dán nguyên mã <iframe> từ Google Maps hoặc chỉ URL trong thuộc tính src. Hệ thống sẽ tự tách và lưu URL an toàn.'), 'facebook_url' => array('label' => 'Facebook', 'type' => 'url'), 'youtube_url' => array('label' => 'YouTube', 'type' => 'url'), 'zalo_url' => array('label' => 'Zalo', 'type' => 'url'), 'english_site_url' => array('label' => 'Website tiếng Anh (hiện cờ EN)', 'type' => 'url'), 'meta_title' => array('label' => 'Meta title', 'type' => 'text'), 'meta_description' => array('label' => 'Meta description', 'type' => 'textarea'));
+		'company_name' => array('label' => 'Tên công ty', 'type' => 'text'), 'group_name' => array('label' => 'Tập đoàn/đơn vị chủ quản', 'type' => 'text'), 'slogan' => array('label' => 'Slogan', 'type' => 'text'), 'logo_path' => array('label' => 'Logo', 'type' => 'image'), 'header_banner' => array('label' => 'Header banner', 'type' => 'image'), 'business_registration' => array('label' => 'Mã số doanh nghiệp', 'type' => 'text'), 'address' => array('label' => 'Địa chỉ', 'type' => 'text'), 'phone' => array('label' => 'Điện thoại', 'type' => 'text'), 'hotline' => array('label' => 'Hotline', 'type' => 'text'), 'fax' => array('label' => 'Fax', 'type' => 'text'), 'email' => array('label' => 'Email', 'type' => 'email'), 'working_hours' => array('label' => 'Giờ làm việc', 'type' => 'text'), 'map_embed_url' => array('label' => 'Bản đồ nhúng Google Maps', 'type' => 'textarea', 'rows' => 5, 'help' => 'Dán nguyên mã <iframe> từ Google Maps hoặc chỉ URL trong thuộc tính src. Hệ thống sẽ tự tách và lưu URL an toàn.'), 'facebook_url' => array('label' => 'Facebook', 'type' => 'url'), 'youtube_url' => array('label' => 'YouTube', 'type' => 'url'), 'zalo_url' => array('label' => 'Zalo', 'type' => 'url'), 'english_site_url' => array('label' => 'Website tiếng Anh (hiện cờ EN)', 'type' => 'url'), 'meta_title' => array('label' => 'Meta title', 'type' => 'text'), 'meta_description' => array('label' => 'Meta description', 'type' => 'textarea'));
 
 	public function __construct()
 	{
@@ -33,6 +33,14 @@ class Settings extends Admin_Controller
 		$validator->set_rules('company_name', 'Tên công ty', 'trim|required|max_length[191]');
 		$validator->set_rules('email', 'Email', 'trim|valid_email|max_length[191]');
 		$errors = $validator->run() ? array() : $validator->error_array();
+		foreach (array('logo_path' => 'Logo', 'header_banner' => 'Banner') as $key => $label)
+		{
+			$imagePath = trim((string) $this->input->post($key));
+			if ($imagePath !== '' && ! $this->isUploadedImagePath($imagePath))
+			{
+				$errors[$key] = $label . ' must be uploaded from the media library.';
+			}
+		}
 		$mapEmbedUrl = $this->normalizeMapEmbed((string) $this->input->post('map_embed_url'));
 		if ($mapEmbedUrl === FALSE)
 		{
