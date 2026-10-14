@@ -385,6 +385,28 @@
 			});
 		}
 
+		var previewButton = form.querySelector('[data-news-preview]');
+		var previewDialog = document.querySelector('[data-news-preview-dialog]');
+		if (previewButton && previewDialog) {
+			var previewFrame = previewDialog.querySelector('[data-news-preview-frame]');
+			previewDialog.querySelector('[data-news-preview-close]').addEventListener('click', function () { previewDialog.close(); });
+			previewDialog.addEventListener('close', function () { previewFrame.srcdoc = ''; });
+			previewButton.addEventListener('click', function () {
+				editors.forEach(function (item) {
+					if (form.contains(item.textarea)) item.textarea.value = item.editor.value;
+				});
+				setLoading(previewButton, true);
+				postForm(previewButton.getAttribute('data-news-preview'), new FormData(form))
+					.then(function (res) {
+						if (!res.success) throw new Error(res.message || 'Không thể xem trước tin.');
+						previewFrame.srcdoc = res.html;
+						previewDialog.showModal();
+					})
+					.catch(function (err) { toast(err.message, 'error'); })
+					.finally(function () { setLoading(previewButton, false); });
+			});
+		}
+
 		form.addEventListener('input', function (event) {
 			if (event.target.name) {
 				clearFieldError(form, event.target.name);

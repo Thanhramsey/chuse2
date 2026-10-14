@@ -119,6 +119,26 @@ class Welcome extends Public_Controller
 		$this->renderDetail('pages', 'gioi-thieu-chung');
 	}
 
+	public function recruitment()
+	{
+		$category = $this->Category_model->findBySlug('news', 'tuyen-dung');
+		if (empty($category))
+		{
+			show_404();
+		}
+		$this->renderList('news', $category, site_url('tuyen-dung'));
+	}
+
+	public function procedures()
+	{
+		$category = $this->Category_model->findBySlug('news', 'thu-tuc');
+		if (empty($category))
+		{
+			show_404();
+		}
+		$this->renderList('news', $category, site_url('thu-tuc'));
+	}
+
 	public function search()
 	{
 		$keyword = trim((string) $this->input->get('q'));
@@ -240,7 +260,7 @@ class Welcome extends Public_Controller
 		redirect(public_content_url($resource, $item['slug']));
 	}
 
-	private function renderList($resource, $category)
+	private function renderList($resource, $category, $baseUrlOverride = '')
 	{
 		$config = $this->Content_model->config($resource);
 		$page = $this->currentPage();
@@ -252,7 +272,7 @@ class Welcome extends Public_Controller
 		$total = $this->Content_model->countSearch($resource, $filters);
 		$items = $this->Content_model->search($resource, $filters, self::PER_PAGE, ($page - 1) * self::PER_PAGE);
 		$title = empty($category) ? $config['label'] : $category['name'];
-		$baseUrl = public_archive_url($resource) . (empty($category) ? '' : '/' . rawurlencode($category['slug']));
+		$baseUrl = $baseUrlOverride !== '' ? $baseUrlOverride : public_archive_url($resource) . (empty($category) ? '' : '/' . rawurlencode($category['slug']));
 
 		$this->render('public/list', array(
 			'page_title' => $title . ' - ' . $this->setting('company_name', 'Cao su Chư Sê'),

@@ -140,7 +140,15 @@ class Home extends Admin_Controller
 			$paragraph = trim($paragraph);
 			if ($paragraph !== '')
 			{
-				$missionPoints .= '<p>' . nl2br(html_escape($paragraph)) . '</p>';
+				$separator = strpos($paragraph, ':');
+				if ($separator !== FALSE)
+				{
+					$missionPoints .= '<p><strong>' . html_escape(substr($paragraph, 0, $separator + 1)) . '</strong> ' . html_escape(trim(substr($paragraph, $separator + 1))) . '</p>';
+				}
+				else
+				{
+					$missionPoints .= '<p>' . html_escape($paragraph) . '</p>';
+				}
 			}
 		}
 		return '<div class="home-orientation"><div class="home-vision"><h3>TẦM NHÌN</h3><p>' . nl2br(html_escape(trim($vision))) . '</p></div><div class="home-mission"><h3>SỨ MỆNH</h3><div class="home-mission-points">' . $missionPoints . '</div></div></div>';

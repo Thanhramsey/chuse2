@@ -1828,25 +1828,26 @@ body.home-page .home-section--news .news-card .news-card-foot .btn {
 	background: #008d3b; color: #fff; font-size: 12px; font-weight: 400; letter-spacing: 0;
 }
 body.home-page .home-section--news .news-card .news-card-foot .btn:hover { background: #08763c; color: #fff; text-decoration: none; }
-body.home-page .home-section--orientation { padding: 18px 16px; }
-body.home-page .home-section--orientation .panel-title { margin: 0 0 16px; font-size: 18px; }
+body.home-page .home-section--orientation { padding: 24px 22px; }
+body.home-page .home-section--orientation .panel-title { margin: 0 0 22px; font-size: 25px; }
 body.home-page .home-section--orientation > .rich-text { margin: 0; }
-body.home-page .home-section--orientation .home-orientation { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 18px; }
-body.home-page .home-section--orientation .home-orientation > div { position: relative; min-width: 0; min-height: 192px; overflow: hidden; padding: 20px 18px; border: 0; border-radius: 2px; background-color: #198047; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 150'%3E%3Cpath fill='%2357b477' fill-opacity='.72' d='M100 150C75 124 47 93 44 40c31 31 47 64 56 91v19ZM100 150C67 130 35 113 3 91c43 11 75 34 97 54v5ZM100 150C77 130 60 106 54 77c26 26 40 50 46 68v5Z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right bottom; background-size: 110px 150px; color: #fff; text-align: left; }
+body.home-page .home-section--orientation .home-orientation { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 25px; }
+body.home-page .home-section--orientation .home-orientation > div { position: relative; min-width: 0; min-height: 261px; overflow: hidden; padding: 24px; border: 0; border-radius: 3px; background-color: #198047; color: #fff; text-align: left; }
+body.home-page .home-section--orientation .home-orientation > div::after { content: ""; position: absolute; right: 0; bottom: 0; width: 95px; height: 194px; background: url("../images/Group.png") right bottom / contain no-repeat; opacity: .28; pointer-events: none; }
 body.home-page .home-section--orientation .home-vision { display: flex; flex-direction: column; justify-content: center; }
 body.home-page .home-section--orientation .home-mission h3,
-body.home-page .home-section--orientation .home-vision h3 { position: relative; z-index: 1; margin: 0 0 10px; color: #fff; font: 700 15px/1.3 Arial,sans-serif; }
+body.home-page .home-section--orientation .home-vision h3 { position: relative; z-index: 1; margin: 0 0 10px; color: #fff; font: 700 21px/1.3 Arial,sans-serif; }
 body.home-page .home-section--orientation .home-mission p,
-body.home-page .home-section--orientation .home-vision p { position: relative; z-index: 1; margin: 0 0 12px; color: #fff; font: 12px/1.55 Arial,sans-serif; }
+body.home-page .home-section--orientation .home-vision p { position: relative; z-index: 1; margin: 0 0 16px; color: #fff; font: 16px/1.5 Arial,sans-serif; }
 body.home-page .home-section--orientation .home-mission p:last-child,
 body.home-page .home-section--orientation .home-vision p:last-child { margin-bottom: 0; }
 body.home-page .home-section--orientation .home-mission p strong { display: inline; margin: 0; color: #fff; font-size: inherit; }
-body.home-page .home-section--company_story { display: grid; grid-template-columns: minmax(210px,.75fr) minmax(0,1.6fr); gap: 22px; align-items: center; }
+body.home-page .home-section--company_story { display: grid; grid-template-columns: minmax(200px,.68fr) minmax(0,1.67fr); gap: 22px; align-items: center; }
 body.home-page .home-section--company_story .panel-title { text-align: left; }
 body.home-page .home-section--company_story .panel-title { max-width: 300px; font-size: 25px; }
 body.home-page .home-section--company_story .rich-text { padding: 18px; border: 1px solid #ddd; color: #333; font: 14px/1.6 Arial,sans-serif; }
 body.home-page .home-section--company_story .home-story-image { display: block; width: 100%; aspect-ratio: 2.55 / 1; margin: 0 0 14px; object-fit: cover; }
-body.home-page .home-section--company_story .rich-text p { margin: 0 0 10px; font-size: 14px; line-height: 1.6; }
+body.home-page .home-section--company_story .rich-text p { margin: 0 0 10px; font-size: 14px; line-height: 1.6; text-align: justify;}
 body.home-page .site-footer { background: #0c984a; color: #fff; }
 body.home-page .site-footer .footer-main { background: transparent; border: 0; border-radius: 0; box-shadow: none; }
 body.home-page .site-footer > .container { padding: 18px 16px 8px; }
@@ -1902,6 +1903,8 @@ body.home-page .site-footer > .container { padding: 22px 24px 10px; }
 	body.home-page .layout-home > .rail-left { order: 2; grid-template-columns: repeat(2,minmax(0,1fr)); }
 	body.home-page .home-section--intro { padding: 16px !important; }
 	body.home-page .home-section--orientation { padding: 16px; }
+	body.home-page .home-section--orientation .home-orientation { grid-template-columns: minmax(0,1fr); }
+	body.home-page .home-section--orientation .home-orientation > div { min-height: 0; }
 	body.home-page .home-intro-layout { grid-template-columns: minmax(0,1fr); }
 	body.home-page .home-section--news .news-grid,
 	body.home-page .home-section--kcn_nam_pleiku .news-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
@@ -2021,6 +2024,7 @@ body .main-menu ul a { padding: 10px 16px; font-size: 14px; line-height: 1.5; }
 body:not(.home-page) .layout-inner .rail { gap: 16px; }
 body:not(.home-page) .layout-inner .widget-body { padding: 0; }
 body:not(.home-page) .layout-inner .widget-body > .widget-list { padding: 8px 16px 14px; }
+body:not(.home-page) .layout-inner .widget-body > .faq-widget-list { padding: 12px 16px 16px; }
 body:not(.home-page) .layout-inner .widget-list li { padding-top: 8px; padding-bottom: 8px; }
 body:not(.home-page) .layout-inner .widget-list a { color: #374151; font-size: 14px; line-height: 1.55; }
 body:not(.home-page) .layout-inner .widget-media p { margin: 12px 14px 0; color: #333; font-size: 13px; line-height: 1.5; }

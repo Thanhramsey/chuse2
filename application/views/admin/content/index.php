@@ -205,8 +205,15 @@ $lowerLabel = mb_strtolower($resourceLabel, 'UTF-8');
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-link link-secondary" data-bs-dismiss="modal">Hủy</button>
+				<?php if ($resource === 'news'): ?><button type="button" class="btn btn-outline-primary" data-news-preview="<?php echo site_url('admin/noi-dung/news/xem-truoc'); ?>">Xem trước</button><?php endif; ?>
 				<button type="submit" class="btn btn-primary ms-auto">Lưu</button>
 			</div>
 		<?php echo form_close(); ?>
 	</div>
 </div>
+<?php if ($resource === 'news'): ?>
+<dialog class="admin-news-preview" data-news-preview-dialog aria-label="Xem trước tin tức">
+	<div class="admin-news-preview-head"><strong>Xem trước tin tức</strong><button type="button" class="btn-close" data-news-preview-close aria-label="Đóng xem trước"></button></div>
+	<iframe title="Nội dung xem trước" sandbox="" data-news-preview-frame></iframe>
+</dialog>
+<?php endif; ?>

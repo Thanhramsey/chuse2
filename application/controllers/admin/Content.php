@@ -80,6 +80,44 @@ class Content extends Admin_Controller
 		$this->json(array('success' => TRUE, 'data' => $data));
 	}
 
+	public function previewNews()
+	{
+		$this->requirePost();
+		$id = (int) $this->input->post('id');
+		if ($id > 0)
+		{
+			$item = $this->Content_model->find('news', $id);
+			if (empty($item) || ! $this->canUpdate('news', $item))
+			{
+				return $this->json(array('success' => FALSE, 'message' => 'Bạn không có quyền xem trước tin này.'), 403);
+			}
+		}
+		else
+		{
+			$this->requirePermission('news.create');
+		}
+
+		$this->load->library('Html_sanitizer');
+		$coverPath = (string) $this->input->post('cover_path');
+		$categoryId = (int) $this->input->post('category_id');
+		$category = $categoryId > 0 && $this->Category_model->belongsTo($categoryId, 'news') ? $this->Category_model->find($categoryId) : NULL;
+		$errors = array();
+		$attachments = $this->collectAttachments('news', $errors);
+		if (! empty($errors))
+		{
+			return $this->json(array('success' => FALSE, 'message' => $errors['attachments']), 422);
+		}
+		$html = $this->load->view('admin/content/news_preview', array(
+			'title' => trim((string) $this->input->post('title')),
+			'excerpt' => trim((string) $this->input->post('excerpt')),
+			'contentHtml' => $this->html_sanitizer->clean($this->input->post('content_html')),
+			'coverUrl' => $this->isUploadedImagePath($coverPath) && is_file(FCPATH . $coverPath) ? base_url($coverPath) : '',
+			'categoryName' => $category ? $category['name'] : '',
+			'attachments' => $attachments
+		), TRUE);
+		$this->json(array('success' => TRUE, 'html' => $html));
+	}
+
 	public function save($resource = '')
 	{
 		$this->ensureResource($resource);
