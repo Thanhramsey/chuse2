@@ -230,6 +230,7 @@ class Public_Controller extends CI_Controller
 		$data['settings'] = $this->settings;
 		$data['siteLang'] = $this->siteLang;
 		$data['mainMenu'] = $this->Menu_model->tree('main');
+		$data['sidebarMenu'] = $this->Menu_model->flatTree('home_sidebar', TRUE);
 		$data['footerMenu'] = $this->Menu_model->tree('footer');
 		$data['footerSections'] = $this->railSections(array('footer'));
 		$data['partners'] = $this->db->where('status', 1)->order_by('sort_order', 'ASC')->order_by('id', 'ASC')->get('partners')->result_array();

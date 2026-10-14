@@ -12,7 +12,7 @@ $old = function ($field) { return html_escape((string) set_value($field)); };
 ?>
 <div class="layout-inner">
 	<aside class="rail" aria-label="Chuyên mục">
-		<?php $this->load->view('public/partials/rail', array('sections' => $rail, 'siteLang' => $siteLang)); ?>
+		<?php $this->load->view('public/partials/rail', array('sections' => $rail, 'siteLang' => $siteLang, 'sidebarMenu' => $sidebarMenu)); ?>
 	</aside>
 
 	<div class="main-col">

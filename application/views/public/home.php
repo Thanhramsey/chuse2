@@ -1,12 +1,7 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 <div class="layout-home">
 	<aside class="rail rail-left" aria-label="<?php echo lang('site_sidebar'); ?>">
-		<nav class="home-sidebar-nav" aria-label="<?php echo $siteLang === 'en' ? 'Investment information' : 'Thông tin khu công nghiệp'; ?>">
-			<?php foreach ($sidebarMenu as $menuItem): ?>
-			<a href="<?php echo html_escape(public_safe_url($menuItem['url'])); ?>"><?php echo html_escape(public_label($menuItem, 'title', $siteLang)); ?></a>
-			<?php endforeach; ?>
-		</nav>
-		<?php $this->load->view('public/partials/rail', array('sections' => $rail, 'siteLang' => $siteLang)); ?>
+		<?php $this->load->view('public/partials/rail', array('sections' => $rail, 'siteLang' => $siteLang, 'sidebarMenu' => $sidebarMenu)); ?>
 	</aside>
 	<div class="main-col">
 		<?php if (! empty($slider)): ?>

@@ -1737,9 +1737,10 @@ body.home-page .site-main { padding: 25px 0 34px; }
 body.home-page .layout-home { grid-template-columns: 258px minmax(0,1fr); column-gap: 30px; row-gap: 0; align-items: start; }
 body.home-page .layout-home > .main-col { grid-column: auto; min-width: 0; }
 body.home-page .layout-home > .rail { display: grid; grid-template-columns: minmax(0,1fr); gap: 14px; margin: 0; }
-body.home-page .home-sidebar-nav { display: grid; gap: 8px; margin: 6px 0 7px; padding-inline: 8px 2px; }
-body.home-page .home-sidebar-nav a { display: block; padding: 6px 16px; background: #079847; color: #fff; font-size: 14px; font-weight: 700; line-height: 20px; text-decoration: none; text-transform: uppercase; }
-body.home-page .home-sidebar-nav a:hover { background: #08763c; }
+.home-sidebar-nav { position: relative; display: grid; gap: 8px; padding: 20px 14px 16px; border: 1px solid #d7e4da; border-top: 4px solid #079847; background: linear-gradient(145deg, #fff 0%, #f7fbf8 100%); box-shadow: 0 8px 22px rgba(17, 80, 44, .11), 0 2px 5px rgba(17, 80, 44, .05); }
+.home-sidebar-nav::before { position: absolute; top: -4px; right: 0; width: 52px; height: 4px; background: #dfc05a; content: ""; }
+.home-sidebar-nav a { display: block; padding: 6px 16px; background: #079847; color: #fff; font-size: 14px; font-weight: 700; line-height: 20px; text-decoration: none; text-transform: uppercase; }
+.home-sidebar-nav a:hover, .home-sidebar-nav a:focus-visible { background: #08763c; }
 body.home-page .home-sidebar-placeholders { display: grid; gap: 7px; }
 body.home-page .home-sidebar-media h2 { margin: 0; padding: 9px 7px; background: #188047; color: #fff; font-size: 11px; font-weight: 700; text-align: center; text-transform: uppercase; }
 body.home-page .home-sidebar-media a { display: block; margin-top: 6px; }

@@ -78,7 +78,6 @@ class Welcome extends Public_Controller
 			'page_title' => $this->setting('meta_title', $this->setting('company_name', 'Công ty TNHH MTV Cao su Chư Sê')),
 			'meta_description' => $this->setting('meta_description', $this->setting('slogan')),
 			'rail' => $rail,
-			'sidebarMenu' => $this->Menu_model->flatTree('home_sidebar', TRUE),
 			'mainSections' => $mainSections,
 			'fullSections' => $fullSections,
 			'slider' => $slider

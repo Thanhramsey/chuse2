@@ -11,7 +11,7 @@ foreach ($attachments as $file)
 ?>
 <div class="layout-inner">
 	<aside class="rail" aria-label="<?php echo lang('site_sidebar'); ?>">
-		<?php $this->load->view('public/partials/rail', array('sections' => $rail, 'siteLang' => $siteLang)); ?>
+		<?php $this->load->view('public/partials/rail', array('sections' => $rail, 'siteLang' => $siteLang, 'sidebarMenu' => $sidebarMenu)); ?>
 	</aside>
 
 	<div class="main-col">
