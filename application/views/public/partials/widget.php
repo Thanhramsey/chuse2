@@ -13,7 +13,7 @@ if ($hasCover)
 }
 $widgetId = 'widget-' . (int) $section['id'];
 ?>
-<section class="widget" aria-labelledby="<?php echo $widgetId; ?>-title">
+<section class="widget widget--<?php echo html_escape($section['section_key']); ?>" aria-labelledby="<?php echo $widgetId; ?>-title">
 	<h2 class="widget-head" id="<?php echo $widgetId; ?>-title"><?php echo html_escape(public_label($section, 'title', $siteLang)); ?></h2>
 	<div class="widget-body">
 		<?php if ($section['section_type'] === 'html'): ?>

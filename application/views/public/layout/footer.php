@@ -1,5 +1,6 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 $companyName = isset($settings['company_name']) && $settings['company_name'] !== '' ? $settings['company_name'] : 'Công ty TNHH MTV Cao su Chư Sê';
+$groupName = isset($settings['group_name']) && $settings['group_name'] !== '' ? $settings['group_name'] : 'Tập đoàn Công nghiệp Cao su Việt Nam';
 $address = isset($settings['address']) ? (string) $settings['address'] : '';
 if ($siteLang === 'en')
 {
@@ -22,7 +23,7 @@ $isHomePage = isset($activePath) && $activePath === '';
 		<div class="footer-main">
 			<div class="footer-col footer-contact">
 				<h2><?php echo lang('site_footer_contact'); ?></h2>
-				<p class="footer-company"><?php echo html_escape($companyName); ?></p>
+				<p class="footer-company"> <?php echo html_escape($companyName); ?> - <?php echo html_escape($groupName); ?></p>
 				<ul class="footer-list">
 					<?php if ($address !== ''): ?><li><?php echo lang('site_contact_address'); ?>: <?php echo html_escape($address); ?></li><?php endif; ?>
 					<?php if ($phone !== ''): ?><li><?php echo lang('site_contact_phone_label'); ?>: <a href="tel:<?php echo html_escape(preg_replace('/[^0-9+]/', '', $phone)); ?>"><?php echo html_escape($phone); ?></a></li><?php endif; ?>

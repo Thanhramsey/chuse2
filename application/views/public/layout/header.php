@@ -16,7 +16,7 @@ if ($siteLang !== 'en' && stripos($mastheadCompanyName, 'VRG') === FALSE)
 }
 $logoUrl = public_media_url(isset($settings['logo_path']) ? $settings['logo_path'] : '', base_url('assets/images/logo.png'));
 $bannerUrl = public_media_url(isset($settings['header_banner']) ? $settings['header_banner'] : '', '');
-$mastheadSceneUrl = $bannerUrl !== '' ? $bannerUrl : base_url('assets/images/hero-rubber-plantation.webp');
+$mastheadSceneUrl = $bannerUrl !== '' ? $bannerUrl : base_url('assets/images/hcn.jpg');
 $metaImage = isset($meta_image) && $meta_image !== '' ? $meta_image : $logoUrl;
 $englishSiteUrl = isset($settings['english_site_url']) ? public_safe_url($settings['english_site_url']) : '#';
 $showLanguageSwitch = $englishSiteUrl !== '#';
@@ -49,7 +49,7 @@ $showLanguageSwitch = $englishSiteUrl !== '#';
 
 <header class="site-header">
 	<div class="container">
-		<div class="masthead">
+		<div class="masthead masthead--compact">
 			<?php if ($showLanguageSwitch): ?>
 			<ul class="lang-switch" aria-label="<?php echo lang('site_language_switcher'); ?>">
 				<li><a class="lang-vi<?php echo $siteLang === 'vi' ? ' is-current' : ''; ?>" href="<?php echo html_escape(public_lang_url('vi')); ?>" hreflang="vi"<?php echo $siteLang === 'vi' ? ' aria-current="true"' : ''; ?>><?php echo lang('site_language_vi'); ?></a></li>
@@ -67,13 +67,9 @@ $showLanguageSwitch = $englishSiteUrl !== '#';
 				<?php endif; ?>
 			</div>
 			<div class="masthead-media" aria-hidden="true">
-				<?php if ($activePath === ''): ?>
-				<img src="<?php echo html_escape($mastheadSceneUrl); ?>" alt="">
-				<?php else: ?>
 				<span class="masthead-diamond masthead-diamond--one"><img src="<?php echo html_escape($mastheadSceneUrl); ?>" alt=""></span>
 				<span class="masthead-diamond masthead-diamond--two"><img src="<?php echo html_escape($mastheadSceneUrl); ?>" alt=""></span>
 				<span class="masthead-diamond masthead-diamond--three"><img src="<?php echo html_escape($mastheadSceneUrl); ?>" alt=""></span>
-				<?php endif; ?>
 			</div>
 		</div>
 		<div class="nav-bar">

@@ -5,7 +5,7 @@
 	</aside>
 
 	<div class="main-col">
-		<section class="panel">
+		<section class="panel panel--archive-<?php echo html_escape($resource); ?>">
 			<h1 class="page-title"><?php echo html_escape($listTitle); ?></h1>
 
 			<?php if (! empty($categories)): ?>
@@ -44,7 +44,7 @@
 			<?php else: ?>
 				<div class="article-list">
 					<?php foreach ($items as $item): $url = public_content_url($resource, $item['slug']); ?>
-					<article class="article-item">
+					<article class="article-item<?php echo ! empty($item['cover_path']) ? ' has-cover' : ''; ?>">
 						<?php if (! empty($item['cover_path'])): ?>
 						<a href="<?php echo html_escape($url); ?>" tabindex="-1" aria-hidden="true"><img src="<?php echo html_escape(public_media_url($item['cover_path'])); ?>" alt="" loading="lazy"></a>
 						<?php endif; ?>
