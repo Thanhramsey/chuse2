@@ -383,12 +383,32 @@
 .jodit-popup,
 .jodit-dialog,
 .jodit-ui-tooltip {
-	z-index: 1090 !important;
+	z-index: 1120 !important;
 }
 
 .jodit-container:not(.jodit_inline) {
 	border-radius: 8px;
 	border-color: var(--tblr-border-color);
+}
+
+/* Keep the editor visible above its Bootstrap modal in full screen mode. */
+body > .jodit-container.jodit_fullsize {
+	position: fixed !important;
+	inset: 0 !important;
+	z-index: 1100 !important;
+	display: flex;
+	flex-direction: column;
+	width: 100vw !important;
+	height: 100dvh !important;
+	max-width: none !important;
+	border-radius: 0;
+	background: #fff;
+}
+
+body > .jodit-container.jodit_fullsize .jodit-workplace {
+	flex: 1 1 auto;
+	min-height: 0;
+	height: auto !important;
 }
 
 .admin-news-preview[open] {

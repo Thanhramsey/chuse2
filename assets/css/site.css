@@ -279,6 +279,7 @@ a:hover { color: var(--green-dark); text-decoration: underline; }
 }
 
 .main-menu { list-style: none; margin: 0; padding: 0; display: flex; flex: 1 1 auto; flex-wrap: nowrap; min-width: 0; }
+.menu-language { display: none; }
 .main-menu li { position: relative; }
 .main-menu > li > a {
 	display: block; padding: 12px 9px;
@@ -2302,4 +2303,27 @@ body:not(.home-page) .site-footer .footer-bottom { font-size: 13px; line-height:
 	body:not(.home-page) :is(.panel--archive-news, .panel--archive-projects) .article-item h3 { font-size: 14px; line-height: 1.45; }
 	body:not(.home-page) :is(.panel--archive-news, .panel--archive-projects) .article-item p:not(.meta) { display: none; }
 	body:not(.home-page) :is(.panel--archive-news, .panel--archive-projects) .article-item p.meta { margin: 5px 0 0; padding: 0; font-size: 11px; }
+}
+
+@media (max-width: 900px) {
+	body .site-header .masthead--compact > .lang-switch { display: none; }
+	body .main-menu > .menu-language { display: block; padding: 14px 4px 8px; border-top: 1px solid #e5e9e5; }
+	.menu-language-options { display: flex; gap: 8px; }
+	body .menu-language-options a {
+		display: grid; place-items: center; width: 44px; height: 44px;
+		border: 1px solid #d7e4da; border-radius: 50%; background: #fff; text-decoration: none;
+	}
+	body .menu-language-options a.is-current { border: 2px solid #079847; background: #edf8f0; }
+	body .menu-language-options a:focus-visible { outline: 2px solid #079847; outline-offset: 2px; }
+	.menu-language-flag { position: relative; display: block; width: 27px; height: 27px; overflow: hidden; border-radius: 50%; box-shadow: 0 0 0 1px rgba(0,0,0,.12); }
+	.menu-language-flag--vi { background: #da251d; }
+	.menu-language-flag--vi::after { position: absolute; inset: 0; display: grid; place-items: center; content: "★"; color: #ffde00; font-size: 17px; }
+	.menu-language-flag--en {
+		background-color: #00247d;
+		background-image:
+			linear-gradient(90deg, transparent 42%, #fff 42%, #fff 46%, #c8102e 46%, #c8102e 54%, #fff 54%, #fff 58%, transparent 58%),
+			linear-gradient(0deg, transparent 42%, #fff 42%, #fff 46%, #c8102e 46%, #c8102e 54%, #fff 54%, #fff 58%, transparent 58%),
+			linear-gradient(33deg, transparent 38%, #fff 38%, #fff 46%, #c8102e 46%, #c8102e 54%, #fff 54%, #fff 62%, transparent 62%),
+			linear-gradient(-33deg, transparent 38%, #fff 38%, #fff 46%, #c8102e 46%, #c8102e 54%, #fff 54%, #fff 62%, transparent 62%);
+	}
 }

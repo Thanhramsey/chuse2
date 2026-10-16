@@ -63,7 +63,16 @@ class Welcome extends Public_Controller
 		}
 		if ($companyStorySection !== NULL)
 		{
-			$mainSections[] = $companyStorySection;
+			$storyPosition = 0;
+			foreach ($fullSections as $index => $section)
+			{
+				if ($section['section_key'] === 'orientation')
+				{
+					$storyPosition = $index + 1;
+					break;
+				}
+			}
+			array_splice($fullSections, $storyPosition, 0, array($companyStorySection));
 		}
 		if ($projectSection !== NULL)
 		{

@@ -1,5 +1,5 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
-$companyName = isset($settings['company_name']) && $settings['company_name'] !== '' ? $settings['company_name'] : 'Công ty TNHH MTV Cao su Chư Sê';
+$companyName = 'CHI NHÁNH KCN VRG GIA LAI';
 $groupName = isset($settings['group_name']) && $settings['group_name'] !== '' ? $settings['group_name'] : 'Tập đoàn Công nghiệp Cao su Việt Nam';
 $slogan = isset($settings['slogan']) ? (string) $settings['slogan'] : '';
 $mastheadCompanyName = $companyName;
@@ -78,7 +78,18 @@ $showLanguageSwitch = $englishSiteUrl !== '#';
 					<span aria-hidden="true">&#9776;</span> <?php echo lang('site_menu'); ?>
 				</button>
 				<nav aria-label="<?php echo lang('site_main_nav'); ?>">
-					<ul class="main-menu" id="main-menu"><?php public_menu($mainMenu, $activePath, $siteLang); ?></ul>
+					<ul class="main-menu" id="main-menu">
+						<?php public_menu($mainMenu, $activePath, $siteLang); ?>
+						<?php if ($showLanguageSwitch): ?>
+						<li class="menu-language">
+							<span class="visually-hidden"><?php echo lang('site_language_switcher'); ?></span>
+							<div class="menu-language-options">
+								<a class="<?php echo $siteLang === 'vi' ? 'is-current' : ''; ?>" href="<?php echo html_escape(public_lang_url('vi')); ?>" hreflang="vi" lang="vi"<?php echo $siteLang === 'vi' ? ' aria-current="true"' : ''; ?>><span class="menu-language-flag menu-language-flag--vi" aria-hidden="true"></span><span class="visually-hidden"><?php echo lang('site_language_vi'); ?></span></a>
+								<a class="<?php echo $siteLang === 'en' ? 'is-current' : ''; ?>" href="<?php echo html_escape($englishSiteUrl); ?>" hreflang="en" lang="en"<?php echo $siteLang === 'en' ? ' aria-current="true"' : ''; ?>><span class="menu-language-flag menu-language-flag--en" aria-hidden="true"></span><span class="visually-hidden"><?php echo lang('site_language_en'); ?></span></a>
+							</div>
+						</li>
+						<?php endif; ?>
+					</ul>
 				</nav>
 				<div class="nav-search">
 					<form action="<?php echo site_url('tim-kiem'); ?>" method="get" role="search">

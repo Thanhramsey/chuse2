@@ -100,15 +100,17 @@
 	/* ---------- Rich text editor ---------- */
 	if (window.Jodit) {
 		document.querySelectorAll('textarea[data-editor]').forEach(function (textarea) {
+			var modalParent = textarea.closest('.modal');
 			var editor = Jodit.make(textarea, {
 				height: 420,
+				globalFullSize: !modalParent,
 				toolbarAdaptive: false,
 				askBeforePasteHTML: false,
 				askBeforePasteFromWord: false,
 				defaultActionOnPaste: 'insert_clear_html',
 				showCharsCounter: false,
 				showXPathInStatusbar: false,
-				buttons: 'bold,italic,underline,strikethrough,|,paragraph,ul,ol,|,align,|,link,image,table,hr,|,eraser,undo,redo,|,source,fullsize',
+				buttons: 'bold,italic,underline,strikethrough,|,font,fontsize,brush,|,paragraph,ul,ol,|,align,|,link,image,table,hr,|,eraser,undo,redo,|,source,fullsize',
 				uploader: {
 					url: uploadUrl,
 					insertImageAsBase64URI: false,
@@ -118,6 +120,23 @@
 					}
 				}
 			});
+			if (modalParent) {
+				var fullscreenMarker = null;
+				editor.e.on('toggleFullSize', function () {
+					if (editor.container.classList.contains('jodit_fullsize')) {
+						fullscreenMarker = document.createComment('editor position');
+						editor.container.parentNode.insertBefore(fullscreenMarker, editor.container);
+						document.body.appendChild(editor.container);
+					} else if (fullscreenMarker) {
+						fullscreenMarker.parentNode.insertBefore(editor.container, fullscreenMarker);
+						fullscreenMarker.remove();
+						fullscreenMarker = null;
+					}
+				});
+				modalParent.addEventListener('hide.bs.modal', function () {
+					if (editor.container.classList.contains('jodit_fullsize')) editor.toggleFullSize(false);
+				});
+			}
 			editors.push({ textarea: textarea, editor: editor });
 		});
 	}
