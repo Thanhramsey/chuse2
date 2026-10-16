@@ -81,7 +81,7 @@ $isHomePage = isset($activePath) && $activePath === '';
 
 			<div class="footer-col footer-connect">
 				<h2><?php echo lang('site_footer_connect'); ?></h2>
-				<p class="footer-text"><?php echo html_escape(sprintf(lang('site_footer_newsletter_intro'), $companyName)); ?></p>
+				<p class="footer-text"><?php echo str_replace('%s', '<br>' . html_escape($companyName), html_escape(lang('site_footer_newsletter_intro'))); ?></p>
 				<form class="footer-subscribe" method="post" action="<?php echo site_url('dang-ky-nhan-tin'); ?>">
 					<?php echo form_hidden($this->security->get_csrf_token_name(), $this->security->get_csrf_hash()); ?>
 					<label class="visually-hidden" for="footer-newsletter"><?php echo lang('site_footer_newsletter_label'); ?></label>

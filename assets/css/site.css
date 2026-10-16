@@ -1739,7 +1739,7 @@ body.home-page .layout-home { grid-template-columns: 258px minmax(0,1fr); column
 body.home-page .layout-home > .main-col { grid-column: auto; min-width: 0; }
 body.home-page .layout-home > .rail { display: grid; grid-template-columns: minmax(0,1fr); gap: 14px; margin: 0; }
 .home-sidebar-nav { position: relative; display: grid; gap: 8px; padding: 20px 14px 16px; border: 1px solid #d7e4da; border-top: 4px solid #079847; background: linear-gradient(145deg, #fff 0%, #f7fbf8 100%); box-shadow: 0 8px 22px rgba(17, 80, 44, .11), 0 2px 5px rgba(17, 80, 44, .05); }
-.home-sidebar-nav::before { position: absolute; top: -4px; right: 0; width: 52px; height: 4px; background: #dfc05a; content: ""; }
+.home-sidebar-nav::before { position: absolute; top: -4px; right: 0; width: 52px; height: 4px; background: #079847; content: ""; }
 .home-sidebar-nav a { display: block; padding: 6px 16px; background: #079847; color: #fff; font-size: 14px; font-weight: 700; line-height: 20px; text-decoration: none; text-transform: uppercase; }
 .home-sidebar-nav a:hover, .home-sidebar-nav a:focus-visible { background: #08763c; }
 body.home-page .home-sidebar-placeholders { display: grid; gap: 7px; }
@@ -2327,3 +2327,18 @@ body:not(.home-page) .site-footer .footer-bottom { font-size: 13px; line-height:
 			linear-gradient(-33deg, transparent 38%, #fff 38%, #fff 46%, #c8102e 46%, #c8102e 54%, #fff 54%, #fff 62%, transparent 62%);
 	}
 }
+
+/* Improve readability across public pages where legacy rules set tiny text. */
+body.home-page, body:not(.home-page) { font-size: 16px; }
+body :is(.rich-text, .rich-text p, .article-excerpt) { font-size: 16px !important; line-height: 1.75; }
+body :is(.article-meta, .article-item p, .news-card p, .news-card-foot time, .widget-list a, .widget-media p, .faq-widget-item summary, .faq-widget-answer, .faq-widget-link, .contact-info, .form-field label, .form-error, .footer-list, .footer-text, .footer-note, .footer-testimonial p, .footer-testimonial footer, .footer-bottom, .home-highlight p, .home-orientation p, .home-curation-heading p, .home-section .section-subtitle, .home-vision p, .home-mission p, .home-stat span, .product-card p, .card-link, .masthead-slogan) { font-size: 15px !important; }
+body :is(.article-item h3, .news-card h3, .product-card h3, .lead-title) { font-size: 17px !important; }
+body :is(.widget-head, .home-sidebar-media h2, .site-footer .footer-col h2) { font-size: 14px !important; }
+body .main-menu > li > a { font-size: 15px !important; }
+body .nav-search input,
+body .footer-subscribe input,
+body .footer-subscribe button,
+body .form-field input,
+body .form-field textarea,
+body .form-field select,
+body .form-field button { font-size: 15px !important; }
