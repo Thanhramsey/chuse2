@@ -23,6 +23,25 @@
 		var controls = null;
 		var previous = null;
 		var next = null;
+		var transitionTimer = null;
+		var slideRequest = 0;
+		var imageLoads = [];
+		function prepareSlide(index) {
+			if (imageLoads[index]) { return imageLoads[index]; }
+			var image = slides[index].querySelector('img');
+			if (!image) { return Promise.resolve(); }
+			image.loading = 'eager';
+			imageLoads[index] = new Promise(function (resolve) {
+				function decode() {
+					if (typeof image.decode !== 'function') { resolve(); return; }
+					image.decode().then(resolve, resolve);
+				}
+				if (image.complete) { decode(); return; }
+				image.addEventListener('load', decode, { once: true });
+				image.addEventListener('error', resolve, { once: true });
+			});
+			return imageLoads[index];
+		}
 		if (root.closest('.home-hero')) {
 			controls = document.createElement('div');
 			controls.className = 'slide-controls';
@@ -41,15 +60,35 @@
 		}
 
 		function show(index) {
-			slides[current].classList.remove('is-active');
-			slides[current].setAttribute('aria-hidden', 'true');
-			dots.children[current].classList.remove('is-active');
-			dots.children[current].setAttribute('aria-selected', 'false');
-			current = (index + slides.length) % slides.length;
-			slides[current].classList.add('is-active');
-			slides[current].setAttribute('aria-hidden', 'false');
-			dots.children[current].classList.add('is-active');
-			dots.children[current].setAttribute('aria-selected', 'true');
+			var nextIndex = (index + slides.length) % slides.length;
+			var request = ++slideRequest;
+			if (nextIndex === current) { return; }
+			prepareSlide(nextIndex).then(function () {
+				if (request !== slideRequest || nextIndex === current) { return; }
+				if (transitionTimer) { window.clearTimeout(transitionTimer); }
+				slides.forEach(function (slide) {
+					slide.classList.remove('is-leaving', 'is-entering-next', 'is-entering-previous');
+				});
+				var outgoing = slides[current];
+				var forward = (nextIndex - current + slides.length) % slides.length <= slides.length / 2;
+				outgoing.classList.remove('is-active');
+				outgoing.classList.add('is-leaving');
+				outgoing.setAttribute('aria-hidden', 'true');
+				dots.children[current].classList.remove('is-active');
+				dots.children[current].setAttribute('aria-selected', 'false');
+				current = nextIndex;
+				slides[current].classList.add('is-active');
+				slides[current].classList.add(forward ? 'is-entering-next' : 'is-entering-previous');
+				slides[current].setAttribute('aria-hidden', 'false');
+				dots.children[current].classList.add('is-active');
+				dots.children[current].setAttribute('aria-selected', 'true');
+				prepareSlide((current + 1) % slides.length);
+				transitionTimer = window.setTimeout(function () {
+					outgoing.classList.remove('is-leaving');
+					slides[current].classList.remove('is-entering-next', 'is-entering-previous');
+					transitionTimer = null;
+				}, 1050);
+			});
 		}
 
 		slides.forEach(function (slide, index) {
@@ -68,6 +107,7 @@
 		});
 		dots.setAttribute('role', 'tablist');
 		root.appendChild(dots);
+		prepareSlide((current + 1) % slides.length);
 		if (controls) {
 			previous.addEventListener('click', function () { show(current - 1); stop(); });
 			next.addEventListener('click', function () { show(current + 1); stop(); });

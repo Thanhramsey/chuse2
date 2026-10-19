@@ -10,7 +10,7 @@
 				<?php foreach ($slider as $index => $slide): $link = public_safe_url($slide['link_url']); ?>
 				<div class="slide<?php echo $index === 0 ? ' is-active' : ''; ?>">
 					<?php if ($link !== '#'): ?><a href="<?php echo html_escape($link); ?>"><?php endif; ?>
-					<img src="<?php echo html_escape(public_media_url($slide['image_path'])); ?>" alt="<?php echo html_escape(! empty($slide['alt_text']) ? $slide['alt_text'] : $slide['title']); ?>"<?php echo $index === 0 ? '' : ' loading="lazy"'; ?>>
+					<img src="<?php echo html_escape(public_media_url($slide['image_path'])); ?>" alt="<?php echo html_escape(! empty($slide['alt_text']) ? $slide['alt_text'] : $slide['title']); ?>" loading="<?php echo $index === 0 ? 'eager' : 'lazy'; ?>" decoding="async"<?php echo $index === 0 ? ' fetchpriority="high"' : ''; ?>>
 					<?php if ($link !== '#'): ?></a><?php endif; ?>
 					<?php if (! empty($slide['title'])): ?><p class="hero-caption"><?php echo html_escape($slide['title']); ?><?php if (! empty($slide['subtitle'])): ?> <span class="muted" style="font-weight:400">&mdash; <?php echo html_escape($slide['subtitle']); ?></span><?php endif; ?></p><?php endif; ?>
 				</div>

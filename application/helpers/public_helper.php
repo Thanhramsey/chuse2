@@ -29,7 +29,8 @@ if (! function_exists('public_asset'))
 	function public_asset($path)
 	{
 		$full = FCPATH . $path;
-		return base_url($path) . '?v=' . (is_file($full) ? filemtime($full) : 0);
+		$version = is_file($full) ? substr(sha1_file($full), 0, 12) : '0';
+		return base_url($path) . '?v=' . $version;
 	}
 }
 

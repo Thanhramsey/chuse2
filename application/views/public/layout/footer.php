@@ -23,7 +23,7 @@ $isHomePage = isset($activePath) && $activePath === '';
 		<div class="footer-main">
 			<div class="footer-col footer-contact">
 				<h2><?php echo lang('site_footer_contact'); ?></h2>
-				<p class="footer-company"> <?php echo html_escape($companyName); ?> - <?php echo html_escape($groupName); ?></p>
+				<p class="footer-company"> <?php echo html_escape($companyName); ?></p>
 				<ul class="footer-list">
 					<?php if ($address !== ''): ?><li><?php echo lang('site_contact_address'); ?>: <?php echo html_escape($address); ?></li><?php endif; ?>
 					<?php if ($phone !== ''): ?><li><?php echo lang('site_contact_phone_label'); ?>: <a href="tel:<?php echo html_escape(preg_replace('/[^0-9+]/', '', $phone)); ?>"><?php echo html_escape($phone); ?></a></li><?php endif; ?>
@@ -102,7 +102,7 @@ $isHomePage = isset($activePath) && $activePath === '';
 				<h2 class="visually-hidden"><?php echo lang('site_contact_map'); ?></h2>
 				<iframe src="<?php echo html_escape($mapUrl); ?>" title="<?php echo lang('site_contact_map'); ?> <?php echo html_escape($companyName); ?>" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
 			</div>
-			<?php elseif ($isHomePage): ?>
+			<?php else: ?>
 			<div class="footer-col footer-map footer-map-placeholder">
 				<h2 class="visually-hidden"><?php echo lang('site_contact_map'); ?></h2>
 				<img src="<?php echo base_url('assets/images/website-reference-map.jpg'); ?>" alt="Bản đồ mẫu trích từ Website.pdf; chờ URL bản đồ chi nhánh">
