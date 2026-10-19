@@ -1852,7 +1852,7 @@ body.home-page .home-section--company_story .rich-text p { margin: 0 0 10px; fon
 body.home-page .site-footer { background: #0c984a; color: #fff; }
 body.home-page .site-footer .footer-main { background: transparent; border: 0; border-radius: 0; box-shadow: none; }
 body.home-page .site-footer > .container { padding: 18px 16px 8px; }
-body.home-page .site-footer .footer-main { grid-template-columns: minmax(0,1.1fr) minmax(230px,1fr) minmax(220px,.8fr); gap: 22px; padding: 0; }
+body.home-page .site-footer .footer-main { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; padding: 0; }
 body.home-page .site-footer .footer-contact { grid-column: 1; grid-row: 1; }
 body.home-page .site-footer .footer-connect { grid-column: 3; grid-row: 1; }
 body.home-page .site-footer .footer-col h2 { color: #fff; font-size: 11px; font-weight: 400; }
@@ -2342,3 +2342,9 @@ body .form-field input,
 body .form-field textarea,
 body .form-field select,
 body .form-field button { font-size: 15px !important; }
+
+@media (min-width: 761px) {
+	body .site-footer .footer-map { display: flex; align-items: center; justify-content: center; }
+	body .site-footer .footer-map iframe { width: min(100%, 480px); }
+	body .site-footer .footer-map-placeholder img { width: min(100%, 480px); margin-inline: auto; }
+}
